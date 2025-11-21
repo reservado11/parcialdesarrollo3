@@ -58,6 +58,9 @@ app.get('/api/ventas', (req, res) => {
     res.json(ventasDB);
 });
 
+app.get('/', (req, res) => {
+    res.send(' Ventas funcionando correctamente 🚀');
+});
 
 app.listen(PORT, () => {
     console.log(`Microservicio de Ventas corriendo en http://localhost:${PORT}`);

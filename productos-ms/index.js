@@ -31,6 +31,9 @@ app.get('/api/productos/:id/stock', (req, res) => {
     }
 });
 
+app.get('/', (req, res) => {
+    res.send(' Productos funcionando correctamente 🚀');
+});
 
 app.get('/api/productos', (req, res) => {
     res.json(productosDB);

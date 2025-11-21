@@ -20,6 +20,10 @@ app.get('/api/clientes/:id', (req, res) => {
     res.json(cliente);
 });
 
+app.get('/', (req, res) => {
+    res.send(' Clientes funcionando correctamente 🚀');
+});
+
 app.listen(PORT, () => {
     console.log(`Microservicio de Clientes corriendo en http://localhost:${PORT}`);
 });
