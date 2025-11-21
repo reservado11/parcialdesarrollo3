@@ -36,9 +36,19 @@ app.post('/api/ventas', async (req, res) => {
             fecha: new Date().toISOString() 
         };
         ventasDB.push(nuevaVenta);
+
         
         console.log('Venta registrada exitosamente.');
         res.status(201).json(nuevaVenta);
+                // Descontar stock
+        console.log('🔧 Descontando stock...');
+        for (const item of items) {
+            console.log(`↘ Reduciendo stock del producto ${item.producto_id} en ${item.cantidad} unidades...`);
+            await axios.patch(`${PRODUCTOS_URL}/${item.producto_id}/reducir-stock`, {
+                cantidad: item.cantidad
+            });
+            console.log(`✔ Stock de producto ${item.producto_id} actualizado`);
+        }
 
     } catch (error) {
         
@@ -48,9 +58,18 @@ app.post('/api/ventas', async (req, res) => {
                 error: `Error de dependencia: ${error.response.data}` 
             });
         }
-        console.error('Error interno del servidor:', error.message);
-        res.status(500).json({ error: 'Error interno del servidor de ventas.' });
+        console.error('Error interno:', error.message);
+        res.status(500).json({ error: 'Servidor de ventas.' });
     }
+});
+
+//cleinte id
+app.get('/api/ventas/:id', (req, res) => {
+    const venta = ventasDB.find(v => v.id === parseInt(req.params.id));
+    if (!venta) {
+        return res.status(404).send('Venta no encontrada');
+    }
+    res.json(venta);
 });
 
 
